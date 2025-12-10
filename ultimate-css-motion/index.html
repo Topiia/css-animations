@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate CSS Motion | Zero JS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- 
+      State Controls (The "Redux" of CSS)
+      We use hidden checkboxes to control global state via sibling combinators (~).
+    -->
+    <input type="checkbox" id="toggle-wireframe" class="state-control" aria-label="Toggle Wireframe Mode">
+    <input type="checkbox" id="toggle-pause" class="state-control" aria-label="Pause Animation">
+
+    <!-- Scroll Track (invisible, just for height) -->
+    <div class="scroll-track"></div>
+
+    <!-- Main Viewport -->
+    <div class="viewport" id="viewport">
+
+        <!-- UI Overlay -->
+        <nav class="hud">
+            <div class="hud-top">
+                <span class="logo">CSS<span class="highlight">MOTION</span></span>
+                <span class="fps-counter">60 FPS (GPU)</span>
+            </div>
+
+            <div class="hud-controls">
+                <!-- Labels trigger the hidden inputs -->
+                <label class="btn" for="toggle-wireframe">
+                    <span class="icon">▣</span> Wireframe
+                </label>
+                <label class="btn" for="toggle-pause">
+                    <span class="icon">⏸</span> Pause motion
+                </label>
+            </div>
+        </nav>
+
+        <!-- 3D Scene Root -->
+        <main class="scene">
+
+            <!-- Camera / World Rig -->
+            <div class="world">
+
+                <!-- The Holographic Cube -->
+                <div class="holo-obj cube">
+                    <div class="face front">
+                        <div class="content">
+                            <h3>Frontier</h3>
+                            <p>Pure CSS 3D Transforms</p>
+                        </div>
+                    </div>
+                    <div class="face back">
+                        <div class="content">
+                            <h3>Depth</h3>
+                            <p>Hardware Accelerated</p>
+                        </div>
+                    </div>
+                    <div class="face right"></div>
+                    <div class="face left"></div>
+                    <div class="face top"></div>
+                    <div class="face bottom"></div>
+
+                    <!-- Internal Core (for complexity) -->
+                    <div class="core-obj"></div>
+                </div>
+
+                <!-- Floating Orbitals -->
+                <div class="orbital-ring ring-1"></div>
+                <div class="orbital-ring ring-2"></div>
+                <div class="orbital-ring ring-3"></div>
+
+                <!-- Particles (CSS Generated) -->
+                <div class="particles">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+
+            </div>
+
+            <!-- Floor / Grid (Pseudo-infinite) -->
+            <div class="floor-grid"></div>
+
+        </main>
+
+        <!-- Vignette / Atmosphere -->
+        <div class="atmosphere"></div>
+
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-prompt">
+        <span>SCROLL TO DIVE</span>
+    </div>
+
+</body>
+
+</html>
