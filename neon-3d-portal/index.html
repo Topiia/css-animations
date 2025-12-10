@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon 3D Portal | Immersive Experience</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Invisible spacer to force scrollbar -->
+    <div class="scroll-spacer"></div>
+
+    <!-- Main 3D Scene Viewport -->
+    <div class="viewport" id="viewport">
+        
+        <!-- Background Ambient Elements -->
+        <div class="ambient-stars"></div>
+        <div class="nebula-bg"></div>
+
+        <!-- The 3D World Container -->
+        <div class="world" id="world">
+            <!-- The Tunnel (Rings will be added via JS for procedural control) -->
+            <div class="tunnel" id="tunnel"></div>
+        </div>
+
+        <!-- UI Overlay (Fixed on top of 3D layer) -->
+        <div class="ui-overlay">
+            <header>
+                <div class="logo">NEON<span class="highlight">PORTAL</span></div>
+                <div class="status">System: Online</div>
+            </header>
+            
+            <div class="hero-content">
+                <h1 class="glitch" data-text="DIVE DEEP">DIVE DEEP</h1>
+                <p>Scroll to accelerate through the hyperspace tunnel.</p>
+                <div class="scroll-indicator">
+                    <span>↓</span>
+                </div>
+            </div>
+
+            <div class="hud-elements">
+                <div class="hud-line top-left"></div>
+                <div class="hud-line bottom-right"></div>
+                <!-- Interactive depth readout -->
+                <div class="depth-meter">DEPTH: <span id="depth-value">0</span>m</div>
+            </div>
+        </div>
+
+        <!-- Post-processing Overlay (Vignette, Noise) -->
+        <div class="vignette"></div>
+        <div class="noise-overlay"></div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
