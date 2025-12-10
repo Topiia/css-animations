@@ -1,0 +1,326 @@
+.{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    background: #050505;
+}
+.cube{
+    position: fixed;
+    top:70px;
+    left: 100px;
+    width: 150px;
+    height: 150px;
+    transform-style: preserve-3d;
+    transform: rotateX(-30deg);
+    animation: animate 14s linear infinite;
+}
+@keyframes animate{
+    0%{
+        transform: rotateX(-30deg) rotateY(0deg);
+    }
+    100%{
+        transform: rotateX(-30deg) rotateY(360deg);
+    }
+}
+.cube div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+.cube div span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#151515, #eda50a);
+    transform: rotateY(calc(90deg * var(--i)))
+    translateZ(74px); /* 300 / 2 = 150*/;
+}
+.top{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    background: #222;
+    transform: rotateX(90deg) translateZ(74px);
+}
+.top::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    background: rgb(240, 173, 4);
+    transform: translateZ(-240px);
+    filter: blur(20px);
+    box-shadow: 0 0 120px rgba(231, 166, 4, 0.2),
+    0 0 200px rgba(241, 153, 2, 0.4),
+    0 0 300px rgba(255, 196, 0, 0.6),
+    0 0 400px rgba(255, 196, 0, 0.8),
+    0 0 500px rgb(255, 238, 0);
+
+}
+
+.cube2{
+    position: fixed;
+    top: 50px;
+    right: 80px;
+    width: 100px;
+    height: 100px;
+    transform-style: preserve-3d;
+    transform: rotateX(-30deg);
+    animation: animate 2s linear infinite;
+}
+@keyframes animate{
+    0%{
+        transform: rotateX(-30deg) rotateY(0deg);
+    }
+    100%{
+        transform: rotateX(-30deg) rotateY(360deg);
+    }
+}
+.cube2 div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+.cube2 div span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#151515, #f00808);
+    transform: rotateY(calc(90deg * var(--i)))
+    translateZ(50px); /* 300 / 2 = 150*/;
+}
+.top2{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: #222;
+    transform: rotateX(90deg) translateZ(50px);
+}
+.top2::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: rgb(240, 4, 4);
+    transform: translateZ(-160px);
+    filter: blur(20px);
+    box-shadow: 0 0 120px rgba(231, 4, 4, 0.2),
+    0 0 200px rgba(241, 2, 2, 0.4),
+    0 0 300px rgba(255, 0, 0, 0.6),
+    0 0 400px rgba(255, 0, 0, 0.8),
+    0 0 500px rgb(255, 0, 0);
+
+}
+
+
+.cube3{
+    position: fixed;
+    top: 180px;
+    right: 580px;
+    width: 200px;
+    height: 200px;
+    transform-style: preserve-3d;
+    transform: rotateX(-30deg);
+    animation: animate 8s linear infinite;
+}
+@keyframes animate{
+    0%{
+        transform: rotateX(-30deg) rotateY(0deg);
+    }
+    100%{
+        transform: rotateX(-30deg) rotateY(360deg);
+    }
+}
+.cube3 div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+.cube3 div span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#151515, #08e8f0);
+    transform: rotateY(calc(90deg * var(--i)))
+    translateZ(100px); /* 300 / 2 = 150*/;
+}
+.top3{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background: #222;
+    transform: rotateX(90deg) translateZ(100px);
+}
+.top3::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background: rgb(4, 236, 240);
+    transform: translateZ(-320px);
+    filter: blur(20px);
+    box-shadow: 0 0 120px rgba(4, 212, 231, 0.2),
+    0 0 200px rgba(2, 217, 241, 0.4),
+    0 0 300px rgba(0, 247, 255, 0.6),
+    0 0 400px rgba(0, 251, 255, 0.8),
+    0 0 500px rgb(0, 255, 251);
+
+}
+
+.cube4{
+    position: fixed;
+    top:320px;
+    right: 80px;
+    width: 150px;
+    height: 150px;
+    transform-style: preserve-3d;
+    transform: rotateX(-30deg);
+    animation: animate 1s linear infinite;
+}
+@keyframes animate{
+    0%{
+        transform: rotateX(-30deg) rotateY(0deg);
+    }
+    100%{
+        transform: rotateX(-30deg) rotateY(360deg);
+    }
+}
+.cube4 div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+.cube4 div span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#151515, #e50aed);
+    transform: rotateY(calc(90deg * var(--i)))
+    translateZ(74px); /* 300 / 2 = 150*/;
+}
+.top4{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    background: #222;
+    transform: rotateX(90deg) translateZ(74px);
+}
+.top4::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 150px;
+    height: 150px;
+    background: rgb(240, 4, 216);
+    transform: translateZ(-240px);
+    filter: blur(20px);
+    box-shadow: 0 0 120px rgba(220, 4, 231, 0.2),
+    0 0 200px rgba(241, 2, 217, 0.4),
+    0 0 300px rgba(255, 0, 255, 0.6),
+    0 0 400px rgba(238, 0, 255, 0.8),
+    0 0 500px rgb(255, 0, 247);
+
+}
+
+.cube5{
+    position: fixed;
+    top: 420px;
+    left: 80px;
+    width: 100px;
+    height: 100px;
+    transform-style: preserve-3d;
+    transform: rotateX(-30deg);
+    animation: animate 6s linear infinite;
+}
+@keyframes animate{
+    0%{
+        transform: rotateX(-30deg) rotateY(0deg);
+    }
+    100%{
+        transform: rotateX(-30deg) rotateY(360deg);
+    }
+}
+.cube5 div{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+.cube5 div span{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(#151515, #3af008);
+    transform: rotateY(calc(90deg * var(--i)))
+    translateZ(50px); /* 300 / 2 = 150*/;
+}
+.top5{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: #222;
+    transform: rotateX(90deg) translateZ(50px);
+}
+.top5::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background: rgb(94, 240, 4);
+    transform: translateZ(-160px);
+    filter: blur(20px);
+    box-shadow: 0 0 120px rgba(57, 231, 4, 0.2),
+    0 0 200px rgba(113, 241, 2, 0.4),
+    0 0 300px rgba(38, 255, 0, 0.6),
+    0 0 400px rgba(119, 255, 0, 0.8),
+    0 0 500px rgb(149, 255, 0);
+
+}
+
+
