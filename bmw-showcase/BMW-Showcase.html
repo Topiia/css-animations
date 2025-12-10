@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMW Premium Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <style>
+        :root {
+            --primary: #1c69d4;
+            --secondary: #0066b3;
+            --accent: #ffcc00;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+            --card-bg: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-classic {
+            --primary: #1c69d4;
+            --secondary: #0066b3;
+            --accent: #ffcc00;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+        }
+
+        .theme-m-sport {
+            --primary: #e4002b;
+            --secondary: #000000;
+            --accent: #ffffff;
+            --dark: #0a0a0a;
+            --light: #f0f0f0;
+        }
+
+        .theme-luxury {
+            --primary: #a67c52;
+            --secondary: #2c2c2c;
+            --accent: #d4af37;
+            --dark: #121212;
+            --light: #f8f8f8;
+        }
+
+        .theme-electric {
+            --primary: #00d4aa;
+            --secondary: #003d33;
+            --accent: #00ffd5;
+            --dark: #001a14;
+            --light: #e6fff9;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, var(--secondary) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            pointer-events: none;
+            mix-blend-mode: difference;
+            z-index: 9999;
+            transition: transform 0.2s ease;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.4s ease;
+        }
+
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .theme-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .theme-classic-btn {
+            background: linear-gradient(135deg, #1c69d4 0%, #0066b3 100%);
+        }
+
+        .theme-m-sport-btn {
+            background: linear-gradient(135deg, #e4002b 0%, #000000 100%);
+        }
+
+        .theme-luxury-btn {
+            background: linear-gradient(135deg, #a67c52 0%, #2c2c2c 100%);
+        }
+
+        .theme-electric-btn {
+            background: linear-gradient(135deg, #00d4aa 0%, #003d33 100%);
+        }
+
+        .hero {
+            padding: 4rem 5%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px var(--shadow);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: var(--text);
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(255, 204, 0, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent);
+        }
+
+        .container {
+            padding: 2rem 5%;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px var(--shadow);
+        }
+
+        .card-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-image img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
+        }
+
+        .card-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+
+        .card-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .card-features {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature i {
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-bottom: 5px;
+        }
+
+        .feature-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .feature-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .card-button {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            transition: left 0.3s;
+            z-index: -1;
+        }
+
+        .card-button:hover {
+            color: var(--dark);
+        }
+
+        .card-button:hover::before {
+            left: 0;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: relative;
+            background: linear-gradient(135deg, var(--dark) 0%, var(--secondary) 100%);
+            margin: 5% auto;
+            width: 90%;
+            max-width: 1000px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.5s ease;
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: var(--accent);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: var(--accent);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .detail-section h3 {
+            color: var(--accent);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .detail-list {
+            list-style: none;
+        }
+
+        .detail-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-list li:last-child {
+            border-bottom: none;
+        }
+
+        .detail-value {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        footer {
+            padding: 2rem 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            background: var(--accent);
+            color: var(--dark);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .modal-details {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="theme-classic">
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-circle">BMW</div>
+            <div class="logo-text">BMW <span>Showcase</span></div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Models</a></li>
+                <li><a href="#">Technology</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="theme-selector">
+            <button class="theme-btn theme-classic-btn" data-theme="theme-classic"></button>
+            <button class="theme-btn theme-m-sport-btn" data-theme="theme-m-sport"></button>
+            <button class="theme-btn theme-luxury-btn" data-theme="theme-luxury"></button>
+            <button class="theme-btn theme-electric-btn" data-theme="theme-electric"></button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Experience Ultimate Driving Machines</h1>
+        <p>Discover the perfect blend of performance, luxury, and innovation with BMW's premium vehicle lineup.</p>
+        
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="Search for a BMW model...">
+            <i class="fas fa-search search-icon"></i>
+        </div>
+    </section>
+
+    <!-- 3D Canvas -->
+    <div class="canvas-container" id="canvas-container"></div>
+
+    <!-- Main Content -->
+    <div class="container" id="car-container">
+        <!-- Cards will be generated by JavaScript -->
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="car-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">BMW Model</h2>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-image" src="" alt="BMW Car">
+                </div>
+                <div class="modal-details">
+                    <div class="detail-section">
+                        <h3>Performance</h3>
+                        <ul class="detail-list" id="performance-details">
+                            <!-- Details will be populated by JavaScript -->
+                        </ul>
+                    </div>
+                    <div class="detail-section">
+                        <h3>Features</h3>
+                        <ul class="detail-list" id="feature-details">
+                            <!-- Details will be populated by JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <div class="logo-circle">BMW</div>
+                <div class="logo-text">BMW <span>Showcase</span></div>
+            </div>
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+            </div>
+            <div class="copyright">
+                &copy; 2023 BMW Showcase. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // BMW Car Data
+        const bmwCars = [
+            {
+                id: 1,
+                name: "BMW M8 Competition",
+                subtitle: "The Ultimate Sports Car",
+                description: "The BMW M8 Competition combines breathtaking performance with luxurious comfort in a stunning coupe design.",
+                image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                performance: {
+                    engine: "4.4L V8 Twin-Turbo",
+                    horsepower: "617 HP",
+                    torque: "553 lb-ft",
+                    "0-60 mph": "3.0 seconds",
+                    "Top Speed": "190 mph"
+                },
+                features: [
+                    "M Sport Differential",
+                    "Carbon Fiber Roof",
+                    "M Sport Exhaust",
+                    "20-inch M Light Alloy Wheels",
+                    "Merino Leather Interior"
+                ]
+            },
+            {
+                id: 2,
+                name: "BMW X7",
+                subtitle: "Luxury SUV Redefined",
+                description: "The BMW X7 offers unparalleled space, comfort and sophistication for the entire family.",
+                image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                performance: {
+                    engine: "4.4L V8 Twin-Turbo",
+                    horsepower: "523 HP",
+                    torque: "553 lb-ft",
+                    "0-60 mph": "4.5 seconds",
+                    "Top Speed": "155 mph"
+                },
+                features: [
+                    "Panoramic Sky Lounge Roof",
+                    "Executive Lounge Seating",
+                    "BMW Laserlight",
+                    "Air Suspension",
+                    "Crystal Gear Selector"
+                ]
+            },
+            {
+                id: 3,
+                name: "BMW i4",
+                subtitle: "Electric Performance",
+                description: "The BMW i4 delivers impressive electric range with the dynamic driving experience expected from BMW.",
+                image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                performance: {
+                    engine: "Electric Motor",
+                    horsepower: "536 HP",
+                    torque: "586 lb-ft",
+                    "0-60 mph": "3.7 seconds",
+                    "Range": "300 miles"
+                },
+                features: [
+                    "BMW Curved Display",
+                    "BMW Operating System 8",
+                    "Adaptive Recuperation",
+                    "DC Fast Charging",
+                    "Acoustic Pedestrian Protection"
+                ]
+            },
+            {
+                id: 4,
+                name: "BMW M3 Competition",
+                subtitle: "Iconic Sports Sedan",
+                description: "The BMW M3 Competition continues the legacy of the ultimate sports sedan with aggressive styling and track-ready performance.",
+                image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1964&q=80",
+                performance: {
+                    engine: "3.0L Inline-6 Twin-Turbo",
+                    horsepower: "503 HP",
+                    torque: "479 lb-ft",
+                    "0-60 mph": "3.8 seconds",
+                    "Top Speed": "180 mph"
+                },
+                features: [
+                    "M xDrive All-Wheel Drive",
+                    "Carbon Fiber Bucket Seats",
+                    "M Compound Brakes",
+                    "M-specific suspension",
+                    "M Sport Exhaust System"
+                ]
+            },
+            {
+                id: 5,
+                name: "BMW 7 Series",
+                subtitle: "The Luxury Flagship",
+                description: "The BMW 7 Series represents the pinnacle of luxury, technology and comfort in the BMW lineup.",
+                image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                performance: {
+                    engine: "4.4L V8 Twin-Turbo",
+                    horsepower: "523 HP",
+                    torque: "553 lb-ft",
+                    "0-60 mph": "4.3 seconds",
+                    "Top Speed": "155 mph"
+                },
+                features: [
+                    "BMW Theater Screen",
+                    "Executive Lounge Seating",
+                    "BMW Interaction Bar",
+                    "Sky Lounge Panoramic Roof",
+                    "Bowers & Wilkins Diamond Sound System"
+                ]
+            },
+            {
+                id: 6,
+                name: "BMW Z4",
+                subtitle: "Open-Air Roadster",
+                description: "The BMW Z4 delivers pure driving pleasure with classic roadster proportions and modern performance.",
+                image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+                performance: {
+                    engine: "3.0L Inline-6 Twin-Turbo",
+                    horsepower: "382 HP",
+                    torque: "369 lb-ft",
+                    "0-60 mph": "3.9 seconds",
+                    "Top Speed": "155 mph"
+                },
+                features: [
+                    "Retractable Hardtop",
+                    "M Sport Package",
+                    "Vernasca Leather Interior",
+                    "Adaptive M Suspension",
+                    "Head-Up Display"
+                ]
+            }
+        ];
+
+        // DOM Elements
+        const carContainer = document.getElementById('car-container');
+        const carModal = document.getElementById('car-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalImage = document.getElementById('modal-image');
+        const performanceDetails = document.getElementById('performance-details');
+        const featureDetails = document.getElementById('feature-details');
+        const closeModal = document.getElementById('close-modal');
+        const searchBox = document.querySelector('.search-box');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+
+        // Initialize 3D Scene
+        function initThreeJS() {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+            
+            // Add some floating geometric elements
+            const geometry = new THREE.IcosahedronGeometry(1, 0);
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0x1c69d4, 
+                shininess: 100,
+                transparent: true,
+                opacity: 0.3
+            });
+            
+            const meshes = [];
+            for (let i = 0; i < 15; i++) {
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.x = Math.random() * 40 - 20;
+                mesh.position.y = Math.random() * 40 - 20;
+                mesh.position.z = Math.random() * 20 - 10;
+                mesh.rotation.x = Math.random() * Math.PI;
+                mesh.rotation.y = Math.random() * Math.PI;
+                const scale = Math.random() * 2 + 0.5;
+                mesh.scale.set(scale, scale, scale);
+                scene.add(mesh);
+                meshes.push(mesh);
+            }
+            
+            // Add ambient light
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            // Add directional light
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(directionalLight);
+            
+            camera.position.z = 15;
+            
+            // Animation
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                meshes.forEach(mesh => {
+                    mesh.rotation.x += 0.005;
+                    mesh.rotation.y += 0.008;
+                });
+                
+                renderer.render(scene, camera);
+            }
+            
+            animate();
+            
+            // Handle window resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        // Generate Car Cards
+        function generateCarCards(cars) {
+            carContainer.innerHTML = '';
+            
+            cars.forEach(car => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="card-image">
+                        <img src="${car.image}" alt="${car.name}">
+                    </div>
+                    <div class="card-content">
+                        <h3 class="card-title">${car.name}</h3>
+                        <p class="card-subtitle">${car.subtitle}</p>
+                        <p class="card-description">${car.description}</p>
+                        <div class="card-features">
+                            <div class="feature">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <div class="feature-value">${car.performance['0-60 mph']}</div>
+                                <div class="feature-label">0-60 MPH</div>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-horse-head"></i>
+                                <div class="feature-value">${car.performance.horsepower}</div>
+                                <div class="feature-label">Power</div>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-cogs"></i>
+                                <div class="feature-value">${car.performance.engine.split(' ')[0]}</div>
+                                <div class="feature-label">Engine</div>
+                            </div>
+                        </div>
+                        <button class="card-button" data-id="${car.id}">View Details</button>
+                    </div>
+                `;
+                
+                carContainer.appendChild(card);
+            });
+            
+            // Add event listeners to card buttons
+            document.querySelectorAll('.card-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const carId = parseInt(e.target.getAttribute('data-id'));
+                    openCarModal(carId);
+                });
+            });
+        }
+
+        // Open Car Modal
+        function openCarModal(carId) {
+            const car = bmwCars.find(c => c.id === carId);
+            if (!car) return;
+            
+            modalTitle.textContent = car.name;
+            modalImage.src = car.image;
+            modalImage.alt = car.name;
+            
+            // Populate performance details
+            performanceDetails.innerHTML = '';
+            for (const [key, value] of Object.entries(car.performance)) {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${key}</span> <span class="detail-value">${value}</span>`;
+                performanceDetails.appendChild(li);
+            }
+            
+            // Populate feature details
+            featureDetails.innerHTML = '';
+            car.features.forEach(feature => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${feature}</span>`;
+                featureDetails.appendChild(li);
+            });
+            
+            carModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close Modal
+        function closeCarModal() {
+            carModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Search Functionality
+        function filterCars(searchTerm) {
+            const filteredCars = bmwCars.filter(car => 
+                car.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                car.subtitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                car.description.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+            
+            generateCarCards(filteredCars);
+        }
+
+        // Custom Cursor
+        function initCustomCursor() {
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                
+                setTimeout(() => {
+                    cursorFollower.style.left = e.clientX + 'px';
+                    cursorFollower.style.top = e.clientY + 'px';
+                }, 100);
+            });
+            
+            // Add hover effects
+            const interactiveElements = document.querySelectorAll('button, a, .card');
+            
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', () => {
+                    cursor.style.transform = 'scale(1.5)';
+                    cursorFollower.style.transform = 'scale(1.5)';
+                });
+                
+                element.addEventListener('mouseleave', () => {
+                    cursor.style.transform = 'scale(1)';
+                    cursorFollower.style.transform = 'scale(1)';
+                });
+            });
+        }
+
+        // Theme Switching
+        function initThemeSwitcher() {
+            themeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const theme = button.getAttribute('data-theme');
+                    document.body.className = theme;
+                });
+            });
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            generateCarCards(bmwCars);
+            initThreeJS();
+            initCustomCursor();
+            initThemeSwitcher();
+            
+            // Event listeners
+            closeModal.addEventListener('click', closeCarModal);
+            window.addEventListener('click', (e) => {
+                if (e.target === carModal) {
+                    closeCarModal();
+                }
+            });
+            
+            searchBox.addEventListener('input', (e) => {
+                filterCars(e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
